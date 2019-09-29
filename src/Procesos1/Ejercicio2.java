@@ -1,20 +1,13 @@
 package Procesos1;
 
-import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.ObjectOutput;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
-import java.io.PrintStream;
-import java.util.Arrays;
-import java.util.List;
 import java.util.Scanner;
-import java.util.StringJoiner;
 
 //Ejecuta un programa y sale por consola el nombre del proceso ejecutado
 //y el resultado del proceso mediante el InputStream enviado 
@@ -24,64 +17,44 @@ public class Ejercicio2 {
 	public static void main(String[] args) {
 		String line;
 		Scanner scan = new Scanner(System.in);
+		String input;
 
 		ProcessBuilder builder = new ProcessBuilder("bash", "-c", "ls -la");
 		builder.redirectErrorStream(true);
+		ProcessBuilder builder2 = new ProcessBuilder("bash", "-c", "tr d D ");
 		Process process;
+		Process process2;
 		try {
 			process = builder.start();
-
+			process2 = builder2.start();
 
 			OutputStream stdin = process.getOutputStream ();
 
 			InputStream stdout = process.getInputStream ();
+			
+			OutputStream stdin2 = process2.getOutputStream ();
+
+			InputStream stdout2 = process2.getInputStream ();
 
 			BufferedReader reader = new BufferedReader (new InputStreamReader(stdout));
 			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stdin));
-
-			String input = "";
-			input += "\n";
-			try {
-				writer.write(input);
-
-				writer.flush();
-
-				input = scan.nextLine();
-				input += "\n";
-				writer.write(input);
-				writer.flush();
-
+			BufferedReader reader2 = new BufferedReader (new InputStreamReader(stdout2));
+			BufferedWriter writer2 = new BufferedWriter(new OutputStreamWriter(stdin2));
+			
+			while ((reader.readLine()) != null) {
+				line =  reader.readLine();
+				writer2.write(line.toCharArray());
+				System.out.println(line);
 				
-
-				input = scan.nextLine();
-				input += "\n";
-				writer.write(input);
-				writer.close();
-
-				while (scan.hasNext()) {
-				    input = scan.nextLine();
-				    if (input.trim().equals("exit")) {
-				        // Putting 'exit' amongst the echo --EOF--s below doesn't work.
-				        writer.write("exit\n");
-				    } else {
-				        writer.write("((" + input + ") && echo --EOF--) || echo --EOF--\n");
-				    }
-				    writer.flush();
-
-				    line = reader.readLine();
-				    while (line != null && ! line.trim().equals("--EOF--")) {
-				        System.out.println ("Stdout: " + line);
-				        line = reader.readLine();
-				    }
-				    if (line == null) {
-				        break;
-				    }
-				}
-
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
 			}
+			
+			while ((reader2.readLine()) != null) {
+				line =  reader2.readLine();
+				
+				System.out.println(line);
+			}
+			
+
 		} catch (IOException e1) {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
