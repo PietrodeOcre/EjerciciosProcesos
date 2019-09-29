@@ -1,62 +1,93 @@
 package Procesos1;
 
+import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.ObjectOutput;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.util.Arrays;
+import java.util.List;
+import java.util.Scanner;
+import java.util.StringJoiner;
 
-//Ejecuta un programa y saa por consola el nombre del proceso ejecutado
+//Ejecuta un programa y sale por consola el nombre del proceso ejecutado
 //y el resultado del proceso mediante el InputStream enviado 
 //al InputStreamReader y de ahi al BuffererReader
 public class Ejercicio2 {
 
-	public static void main(String args[]) throws IOException {
+	public static void main(String[] args) {
+		String line;
+		Scanner scan = new Scanner(System.in);
 
-
+		ProcessBuilder builder = new ProcessBuilder("bash", "-c", "ls -la");
+		builder.redirectErrorStream(true);
+		Process process;
 		try {
-			//Creamos el comando que queremos ejecutar
-			String proceso = new String("ls -la");
-			String proceso2 = new String("tr D d");
-			//mandamos a que se ejecute el comando pasandole como array de string
-			//Process process = Runtime.getRuntime().exec(new String[] {"bash","-c",proceso});
-			//Este metodo hace lo mismo que todo el Runtime del comentario
-			Process process = new ProcessBuilder("bash","-c",proceso).start();
+			process = builder.start();
 
 
-			Process process2 = new ProcessBuilder("bash","-c",proceso2).start();
-			//Enviamos la salida del primer proceso a la entrada del segundo
+			OutputStream stdin = process.getOutputStream ();
 
-			//Capturamos la salida con el metodo getImputStream
-			InputStream is = process.getInputStream();
+			InputStream stdout = process.getInputStream ();
 
-			//Lo convertimos a UTF-8 para pasarlo al BufferedReader
-			InputStreamReader isr = new InputStreamReader(is, "UTF-8");
+			BufferedReader reader = new BufferedReader (new InputStreamReader(stdout));
+			BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stdin));
 
-			BufferedReader br = new BufferedReader(isr);
+			String input = "";
+			input += "\n";
+			try {
+				writer.write(input);
 
+				writer.flush();
 
+				input = scan.nextLine();
+				input += "\n";
+				writer.write(input);
+				writer.flush();
 
+				
 
+				input = scan.nextLine();
+				input += "\n";
+				writer.write(input);
+				writer.close();
 
-			String line;
+				while (scan.hasNext()) {
+				    input = scan.nextLine();
+				    if (input.trim().equals("exit")) {
+				        // Putting 'exit' amongst the echo --EOF--s below doesn't work.
+				        writer.write("exit\n");
+				    } else {
+				        writer.write("((" + input + ") && echo --EOF--) || echo --EOF--\n");
+				    }
+				    writer.flush();
 
-			System.out.println("Salida del proceso " + proceso + ":");
+				    line = reader.readLine();
+				    while (line != null && ! line.trim().equals("--EOF--")) {
+				        System.out.println ("Stdout: " + line);
+				        line = reader.readLine();
+				    }
+				    if (line == null) {
+				        break;
+				    }
+				}
 
-			while ((line = br.readLine()) != null) {
-				//imprimimos las lineas que saca el BufferedReader
-				//Hasta que la linea siguiente sea null
-				System.out.println(line);
-
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}
+		} catch (IOException e1) {
+			// TODO Auto-generated catch block
+			e1.printStackTrace();
 		}
 
 	}
-
 
 
 }
