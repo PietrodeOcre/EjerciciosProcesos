@@ -2,9 +2,12 @@ package ProgramacionConcurrenteVideo1;
 
 import org.omg.CORBA.TRANSACTION_MODE;
 
+import com.sun.media.jfxmedia.events.NewFrameEvent;
+
 public class Principal8 implements Runnable{
 	
 	public static int cont = 0;
+	public static Object object = new Object();
 
 	public static void main(String[] args) {
 		
@@ -16,7 +19,7 @@ public class Principal8 implements Runnable{
 			Runnable runnable = new Principal8();
 			hilos[i] = new Thread(runnable);
 			hilos[i].start();
-
+			
 		}
 		
 		for (int i = 0; i < hilos.length; i++) {
@@ -33,9 +36,12 @@ public class Principal8 implements Runnable{
 
 	@Override
 	public void run() {
-		
-		for (int i = 0; i < 20000; i++) {
-			cont++;
+		synchronized (object) {
+			for (int i = 0; i < 20000; i++) {
+			
+				cont++;
+			}
+			
 		}
 		
 	}
