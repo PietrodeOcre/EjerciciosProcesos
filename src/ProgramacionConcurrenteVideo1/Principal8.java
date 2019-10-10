@@ -1,9 +1,5 @@
 package ProgramacionConcurrenteVideo1;
 
-import org.omg.CORBA.TRANSACTION_MODE;
-
-import com.sun.media.jfxmedia.events.NewFrameEvent;
-
 public class Principal8 implements Runnable{
 	
 	public static int cont = 0;
