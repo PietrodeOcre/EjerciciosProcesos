@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class Ejercicio1 extends Thread{
 	
-	private String frase;
+	private String palabra;
 
 	public static void main(String[] args) {
 		
@@ -20,47 +20,42 @@ public class Ejercicio1 extends Thread{
 			e.printStackTrace();
 		}
 		
-		System.out.println("Soy el hilo principal!");
+		System.out.println("Soy el hilo padre!");
 
 	}
 	
-	public Ejercicio1(String frase) {
+	public Ejercicio1(String palabra) {
 		
-		this.frase = frase;
+		this.palabra = palabra;
 		
 	}
 	
 	public static String pideString() {
 		
-		String frase;
+		String palabra;
 		
 		Scanner scanner = new Scanner(System.in);
 		
 		System.out.print("Escribe una frase: ");
 		
-		frase = scanner.next();
+		palabra = scanner.nextLine();
 		
-		return frase;
+		return palabra;
 		
 	}
 	
 	public void run() {
 		
-		char[] caracteres = frase.toCharArray();
-		//System.out.println(Arrays.toString(caracteres));
-		char[] aux =  new char[caracteres.length];
+
+		char[] aux =  new char[palabra.length()];
 		int cont = 0;
-		for (int i = caracteres.length-1; i >= 0 ; i--){
-			aux[cont++] = caracteres[i];
-			//System.out.print(caracteres[i]);
+		for (int i = palabra.length()-1; i >= 0 ; i--){
+			aux[cont++] = palabra.charAt(i);
+
 		}
-		//System.out.println("Soy el hilo!");
-		
-		
+
 		System.out.println(aux);
-		
-		
-		
+		System.out.println("Soy el hilo hijo.");
 	}
 
 }
