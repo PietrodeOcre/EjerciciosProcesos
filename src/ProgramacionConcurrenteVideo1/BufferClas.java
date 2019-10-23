@@ -14,7 +14,7 @@ public class BufferClas {
 	
 	public synchronized int leer() {
 		int elemento = -1;
-		if(pos<0) {
+		while(pos<0) {
 			System.out.println("El vector esta vacio y el consumidor se va a dormir.");
 			try {
 				wait();
@@ -22,11 +22,11 @@ public class BufferClas {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-		}else {
-			elemento = cola.get(pos);
-			cola.remove(pos);
-			pos--;
 		}
+		elemento = cola.get(pos);
+		cola.remove(pos);
+		pos--;
+
 		return elemento;
 		
 	}

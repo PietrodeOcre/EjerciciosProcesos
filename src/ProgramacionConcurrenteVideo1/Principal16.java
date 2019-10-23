@@ -23,9 +23,8 @@ public class Principal16 implements Runnable{
 			int elemento;
 			while(true) {
 				elemento = buf.leer();
-				if(elemento != -1) {
-					System.out.println("El elemento extraido del buffer es: "+elemento);
-				}
+				System.out.println("El elemento extraido del buffer es: "+elemento);
+				
 				try {
 					Thread.sleep(1000);
 				} catch (InterruptedException e) {
