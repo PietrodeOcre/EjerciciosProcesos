@@ -1,6 +1,5 @@
 package ProgramacionConcurrenteVideo1;
 
-
 import java.util.concurrent.locks.ReentrantLock;
 
 public class Reentrant implements Runnable{
@@ -15,15 +14,15 @@ public class Reentrant implements Runnable{
 		
 		cerrojo.lock();
 		
-		if(condicion) {
+		/*if(condicion) {
 			cerrojo.unlock();
-		}
+		}*/
 		
 		for (int i = 0; i < 100000; i++) {
 			cont++;
 		}
+		
 		cerrojo.unlock();
-
 	}
 
 	public static int getCont() {
