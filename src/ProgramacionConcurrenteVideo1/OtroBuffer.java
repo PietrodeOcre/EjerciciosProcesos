@@ -8,7 +8,7 @@ public class OtroBuffer implements Runnable{
 	
 	private int orden, valor;
 	
-	private static Vector<Integer> elementos =new Vector<Integer>();
+	private static Vector<Integer> elementos =new Vector<>();
 	
 	private static ReentrantLock lock = new ReentrantLock();
 	private static Condition restar = lock.newCondition();
@@ -31,7 +31,7 @@ public class OtroBuffer implements Runnable{
 			}
 			
 			try {
-				Thread.sleep(500);
+				Thread.sleep(750);
 			}catch(InterruptedException e) {
 				e.printStackTrace();
 			}
@@ -54,8 +54,8 @@ public class OtroBuffer implements Runnable{
 			await(sumar);
 		}
 		elementos.add(valor);
-		System.out.println("Se ha extraido el elemento: " + elementos.get(elementos.size()-1));
-		
+		System.out.println("Se ha sumado el elemento: " + elementos.get(elementos.size() -1));
+		 
 		restar.signal();
 		await(sumar);
 	}
