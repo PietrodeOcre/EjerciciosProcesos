@@ -3,7 +3,7 @@ package ProgramacionConcurrenteVideo1;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import javafx.beans.property.ReadOnlyBooleanWrapper;
+
 
 public class Principal16 implements Runnable{
 

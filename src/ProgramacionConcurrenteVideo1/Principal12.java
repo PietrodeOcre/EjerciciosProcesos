@@ -1,6 +1,6 @@
 package ProgramacionConcurrenteVideo1;
 
-import com.sun.media.jfxmedia.events.NewFrameEvent;
+
 
 public class Principal12 implements Runnable{
 	
